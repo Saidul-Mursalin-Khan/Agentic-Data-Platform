@@ -5,6 +5,7 @@ from operator import add
 # 1. Define Agent Schema
 class AgentSchema(BaseModel):
     messages: Annotated[list, add] = Field(..., description="List of messsages to be processed ")
+    user_question: str = Field(..., description="The original question asked by the user")
     curated_questions: str = Field(..., description="Curated user question")
     prompt_query_context: str = Field(..., description="A detailed prompt with SQL DB context that will help agent to generate SQL query")
     is_safe: Literal['yes', 'no'] = Field(..., description="Indicates wether the generated SQL query is safe to execute or not")
