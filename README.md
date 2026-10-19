@@ -551,38 +551,4 @@ Modify `utils/llm_pick.py` to adjust:
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Please ensure:
-
-1. Code follows existing style
-2. All agents have proper documentation
-3. New features include state schemas
-4. Security implications are considered
-5. Tests are added for new functionality
-
----
-
-## 📄 License
-
-This project is part of an AI engineering demonstration.
-
----
-
-## 👨‍💻 Author & Support
-
-For questions, issues, or suggestions, please refer to the project documentation or reach out to the development team.
-
----
-
-## 🎓 Learning Resources
-
-- [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
-- [LangChain Documentation](https://python.langchain.com/)
-- [Claude API Reference](https://docs.anthropic.com/)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-
----
-
-**Last Updated:** August 2026
 **Version:** 0.1.0
