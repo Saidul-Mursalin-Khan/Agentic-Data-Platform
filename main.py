@@ -83,33 +83,42 @@ def show_banner():
     )
 
 
+
 def display_response(response):
     messages = response.get("messages", [])
 
     if not messages:
-        console.print(
-            Panel(
-                "[yellow]The agent returned no messages.[/yellow]",
-                title="⚠ Empty Response",
-                border_style="yellow",
-            )
-        )
+        console.print("[yellow]No response received from the agent.[/yellow]")
         return
 
-    last_item = messages[-1]
+    # Find the last AI message instead of printing the full state
+    last_ai_message = None
 
-    if isinstance(last_item, dict):
+    for message in reversed(messages):
+        if isinstance(message, dict):
+            if message.get("final_answer") or message.get("content"):
+                last_ai_message = message
+                break
+        elif getattr(message, "type", None) == "ai":
+            last_ai_message = message
+            break
+
+    if last_ai_message is None:
+        answer = "No final answer found."
+    elif isinstance(last_ai_message, dict):
         answer = (
-            last_item.get("final_answer")
-            or last_item.get("content")
-            or str(last_item)
+            last_ai_message.get("final_answer")
+            or last_ai_message.get("content")
         )
     else:
-        answer = getattr(last_item, "content", str(last_item))
+        answer = last_ai_message.content
 
+    # Handle multimodal/list-based message content
     if isinstance(answer, list):
         answer = "\n".join(
-            str(item.get("text", item)) if isinstance(item, dict) else str(item)
+            item.get("text", str(item))
+            if isinstance(item, dict)
+            else str(item)
             for item in answer
         )
 
