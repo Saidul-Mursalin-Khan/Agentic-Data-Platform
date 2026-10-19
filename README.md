@@ -89,7 +89,7 @@ The system follows a hierarchical agent architecture:
 - **Multi-LLM Support**:
   - Low-complexity queries: Faster, cost-effective LLM
   - Medium-complexity queries: Balanced LLM
-  - High-complexity queries: Premium LLM (Claude)
+  - High-complexity queries: Premium LLM
 
 - **Safety & Validation**:
   - SQL query safety checking
@@ -113,7 +113,7 @@ The system follows a hierarchical agent architecture:
 ### 1. Clone and Setup Project
 
 ```bash
-cd Data_Agent
+cd Agentic-Data-Platform
 python -m venv .venv
 
 # Activate virtual environment
@@ -134,7 +134,6 @@ pip install -e .
 This installs:
 - **langchain**: Core LLM framework
 - **langgraph**: Multi-agent orchestration
-- **langchain-anthropic**: Claude AI integration
 - **langchain-openai**: OpenAI integration
 - **pandas**: Data processing
 - **psycopg2**: PostgreSQL driver
@@ -147,7 +146,6 @@ Create a `.env` file in the root directory:
 
 ```env
 # LLM Configuration
-ANTHROPIC_API_KEY=your_claude_api_key
 OPENAI_API_KEY=your_openai_api_key
 
 # Database Configuration
@@ -158,9 +156,9 @@ password=your_password
 database=data_agent_db
 
 # Optional: LLM Model Selection
-LLM_MODEL_LOW=gpt-3.5-turbo
-LLM_MODEL_MEDIUM=gpt-4-turbo
-LLM_MODEL_HIGH=claude-3-opus
+LLM_MODEL_LOW=gpt-5.6-luna
+LLM_MODEL_MEDIUM=gpt-5.6-terra
+LLM_MODEL_HIGH=gpt-5.6-sol
 ```
 
 ---
@@ -214,7 +212,7 @@ from utils.llm_pick import pick_llm
 # Select based on complexity
 llm_fast = pick_llm("low")        # Cost-effective for simple queries
 llm_balanced = pick_llm("medium") # Balanced performance and cost
-llm_powerful = pick_llm("claude") # Premium model for complex tasks
+llm_powerful = pick_llm("high") # Premium model for complex tasks
 ```
 
 ### Database Configuration (`utils/database.py`)
@@ -227,7 +225,7 @@ conn_details = {
     "port": 5432,
     "user": "postgres",
     "password": "password",
-    "dbname": "data_agent_db"
+    "dbname": "agentic_data_platform"
 }
 
 db = DatabaseUtil(conn_details)
@@ -236,68 +234,89 @@ schema_info = db.schema_details("public")
 
 ---
 
+
 ## 💻 Usage
 
-### Running the Data Agent
+### Running the Agentic Data Platform CLI
 
-**Basic Usage:**
-
-```python
-from agents.data_agent import data_agent
-from langchain_core.messages import HumanMessage
-
-# Example: Extract data from API
-response = data_agent.invoke({
-    "messages": [
-        HumanMessage(content="""
-            I want to extract the data from the API endpoint 
-            'https://pokeapi.co/api/v2/pokemon' and save it to 
-            data/extract folder in CSV format
-        """)
-    ],
-    "route_response": ""
-})
-
-print(response)
-```
-
-**SQL Query Example:**
-
-```python
-response = data_agent.invoke({
-    "messages": [
-        HumanMessage(content="""
-            Show me the top 5 users with the highest ratings
-        """)
-    ],
-    "route_response": ""
-})
-```
-
-**ETL Example:**
-
-```python
-response = data_agent.invoke({
-    "messages": [
-        HumanMessage(content="""
-            Transform the rides.csv data by filtering only rides 
-            with rating > 4.5 and save to data/transform
-        """)
-    ],
-    "route_response": ""
-})
-```
-
-### Running from Command Line
+Launch the interactive terminal interface to query your database, extract data from APIs, and perform data transformations using natural language.
 
 ```bash
-# Run the main data agent
-python main.py
+# Activate your existing virtual environment
+source .venv/bin/activate
 
-# Run individual agents
-python agents/sql_analyst.py
-python agents/etl_analyst.py
+# Start the interactive CLI
+python main.py
 ```
+
+### 🖥️ CLI Interface
+
+The CLI provides an interactive terminal experience with formatted responses, a status indicator, and support for multiple consecutive requests.
+
+![Agentic Data Platform CLI](assets/agentic-data-platform-cli.png)
+
+### 💬 Example Interactions
+
+**1. Query the database**
+
+```text
+❯ YOU Show me the average rating for each vehicle type
+
+✦ AGENT RESPONSE
+Average rating for each vehicle type:
+[Results returned from the database]
+```
+
+**2. Extract data from an API**
+
+```text
+❯ YOU Extract Pokémon data from
+https://pokeapi.co/api/v2/pokemon
+and save it as CSV in data/extract/
+```
+
+The ETL agent handles the extraction and saves the resulting dataset.
+
+**3. Transform an existing dataset**
+
+```text
+❯ YOU Filter rides.csv where rating > 4.0
+and save the result as JSON
+```
+
+The ETL agent processes the dataset and saves the transformed output.
+
+**4. Ask follow-up questions**
+
+```text
+❯ YOU How many payment methods are available?
+
+✦ AGENT RESPONSE
+There are 5 payment methods available in the database.
+
+❯ YOU List them
+
+✦ AGENT RESPONSE
+[Payment methods returned by the agent]
+```
+
+### ⌨️ CLI Commands
+
+| Command | Description |
+|---|---|
+| `clear` | Clear the terminal and redraw the interface |
+| `end` | Exit the interactive session |
+| `exit` | Exit the interactive session |
+| `quit` | Exit the interactive session |
+
+### 🧠 Agent Capabilities
+
+- **SQL Analyst Agent:** Converts natural-language questions into SQL queries, validates query safety, executes database operations, and generates answers.
+- **ETL Analyst Agent:** Extracts data from APIs, transforms datasets with Pandas, and saves results in CSV, JSON, or Parquet formats.
+- **Intelligent Router:** Directs requests to the appropriate specialized agent using LangGraph.
+- **Dynamic LLM Selection:** Selects a model based on task complexity.
+
+Each request is processed through the main agent, which routes the task to the appropriate sub-agent.
 
 ---
 
@@ -516,7 +535,6 @@ Modify `utils/llm_pick.py` to adjust:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `ANTHROPIC_API_KEY` | Claude API key | `sk-ant-...` |
 | `OPENAI_API_KEY` | OpenAI API key | `sk-...` |
 | `host` | PostgreSQL host | `localhost` |
 | `port` | PostgreSQL port | `5432` |
@@ -547,42 +565,8 @@ Modify `utils/llm_pick.py` to adjust:
 - **Query Complexity**: Low complexity queries use faster LLMs
 - **Database Optimization**: Add indexes for frequently queried columns
 - **API Rate Limiting**: Respect rate limits of external APIs
-- **Memory Usage**: Large dataset transformations may require optimization
+- **Memory **: Large dataset transformations may require optimization
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Please ensure:
-
-1. Code follows existing style
-2. All agents have proper documentation
-3. New features include state schemas
-4. Security implications are considered
-5. Tests are added for new functionality
-
----
-
-## 📄 License
-
-This project is part of an AI engineering demonstration.
-
----
-
-## 👨‍💻 Author & Support
-
-For questions, issues, or suggestions, please refer to the project documentation or reach out to the development team.
-
----
-
-## 🎓 Learning Resources
-
-- [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
-- [LangChain Documentation](https://python.langchain.com/)
-- [Claude API Reference](https://docs.anthropic.com/)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-
----
-
-**Last Updated:** August 2026
 **Version:** 0.1.0

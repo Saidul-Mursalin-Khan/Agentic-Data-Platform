@@ -1,29 +1,3 @@
-# from agents.data_agent import data_agent
-# from langchain_core.messages import HumanMessage
-
-# if __name__ == "__main__":
-#     # response = data_agent.invoke(
-#     #     {"messages":[HumanMessage(content="I want to extract the data from the API endpoint 'https://pokeapi.co/api/v2/pokemon' and save it to data/extract folder in the csv folder")],
-#     #      "route_response": ""}
-#     # )
-
-#     # print(response)
-
-#     response = data_agent.invoke(
-#             {"messages":[HumanMessage(content="Show me the average rating for each vehicle type")],
-#              "route_response": ""}
-#         )
-    
-#     # print(response)
-#     last_item = response["messages"][-1]
-    
-#     if isinstance(last_item, dict):
-#         print(last_item.get("final_answer", "No final answer found"))
-#     else:
-#         print(last_item.content)
-
-
-
 import time
 
 from rich.console import Console
