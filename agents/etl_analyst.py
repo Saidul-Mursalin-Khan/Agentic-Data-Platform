@@ -11,7 +11,7 @@ from langgraph.graph import StateGraph, START, END
 from langchain.tools import tool
 # from langchain_anthropic import ChatAnthropic
 
-# --------------------- ETL AGENT ------------------------
+# --------------------- ETL AGENT TOOLS ------------------------
 
 @tool
 def extract_load_tool(url:str, output_folder:str, format:str) -> str:
@@ -51,7 +51,7 @@ def transform_load_tool(input_file_path:str, output_folder:str, output_format:st
 
     top_3_rows = etl_tools.transform_load_context(input_file_path)
 
-    llm = pick_llm("claude")
+    llm = pick_llm("medium")
 
     prompt = f"""
             You are a Python Data Analyst who uses Pandas to analyze data. 
@@ -65,7 +65,6 @@ def transform_load_tool(input_file_path:str, output_folder:str, output_format:st
             write the code to transform and save the data at {output_folder}.
             Here's the user's question: {user_question}\n
             Here's the context of the data you will be analyzing: {top_3_rows}\n
-
         """
 
     response = llm.invoke(prompt).content 
@@ -82,5 +81,54 @@ def transform_load_tool(input_file_path:str, output_folder:str, output_format:st
 # Toolkit 
 tools = [extract_load_tool, transform_load_tool]
 
-llm = pick_llm("high")
+llm = pick_llm("medium")
 llm_bind = llm.bind_tools(tools)
+
+
+# --------------------- ETL AGENT GRAPH ------------------------
+
+def llm_node(state:ETLAgentSchema):
+
+    messages = state.messages
+
+    prompt = f"""
+            You are a Python Data Analyst who has access to tools that can extract and load, 
+            transform and load data. You will be provided with a user's question 
+            and you would need to perform the right ETL operations as per the user's question. 
+            If the operation is performed then inform the user and end the coversation.
+            Here's the chat history: {messages}\n
+    """
+
+    final_answer = llm_bind.invoke(prompt)
+
+    state.messages = messages + [final_answer]
+
+    return state
+
+def tool_node(state:ETLAgentSchema):
+    """
+    This node is responsible for invoking the appropriate tool based on the user's question and the context provided by the LLM.
+    """
+
+    tools_results = []
+
+    tools_by_name = {tool.name: tool for tool in tools}
+
+    tool_calls = state.messages[-1].tool_calls
+
+    for tool_call in tool_calls:
+
+        tool = tools_by_name[tool_call['name']]
+        observation = tool.invoke(tool_call['args'])
+
+        tools_results.append(ToolMessage(content=observation, tool_call_id = tool_call['id']))
+
+    state.messages = state.messages + tools_results
+
+    return state   
+
+
+
+if __name__ == "__main__":
+    llm_bind = pick_llm("medium").bind_tools(tools)
+    print(llm_bind.invoke("I want to extract the data from the api endpoint 'https://pokeapi.co/api/v2/pokemon/'"))
