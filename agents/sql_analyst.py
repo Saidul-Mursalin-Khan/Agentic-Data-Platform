@@ -194,9 +194,6 @@ sql_agent_graph.add_conditional_edges("is_safe_sql", is_safe_sql_edge,
                                           "canceled_sql": "canceled_sql"
                                       })
 
-# sql_agent_graph.add_edge("is_safe_sql", "execute_sql")
-# sql_agent_graph.add_edge("is_safe_sql", "canceled_sql")
-
 sql_agent_graph.add_edge("canceled_sql", END)
 sql_agent_graph.add_edge("execute_sql", "represent_final_answer")
 sql_agent_graph.add_edge("represent_final_answer", END)
