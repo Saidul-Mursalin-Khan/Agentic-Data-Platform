@@ -55,10 +55,10 @@ def sql_node(state:DataAgentSchema):
     input_schema = {
         "messages": [],
         "user_question": f"{message}",
-        "curated_ques": "",
+        "curated_question": "",
         "prompt_query_context": "",
         "generated_sql_query": "",
-        "is_safe": "No",
+        "is_safe": "no",
         "comments": "",
         "sql_query_execution_result": "",
         "final_answer": ""
@@ -106,7 +106,7 @@ with open("data_agent_graph.png", "wb") as f:
 if __name__ == "__main__":
 
     response = data_agent.invoke(
-        {"messages":[HumanMessage(content="I want to extract the data from the API endpoint 'https://pokeapi.co/api/v2/pokemon' and save it to data/extract folder in the csv folder")],
+        {"messages":[HumanMessage(content="How many payment method are available in the database?")],
          "route_response": ""}
     )
 

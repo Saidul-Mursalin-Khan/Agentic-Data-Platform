@@ -97,7 +97,9 @@ def is_safe_sql(state: AgentSchema) -> AgentSchema:
     """
 
     response = llm_judge.invoke(prompt).model_dump()
+    
     state.is_safe = response['answer'].lower()
+    state.comments = response["comments"]
     
     return state
 
