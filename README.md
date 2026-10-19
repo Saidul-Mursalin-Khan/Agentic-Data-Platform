@@ -234,68 +234,89 @@ schema_info = db.schema_details("public")
 
 ---
 
+
 ## 💻 Usage
 
-### Running the Data Agent
+### Running the Agentic Data Platform CLI
 
-**Basic Usage:**
-
-```python
-from agents.data_agent import data_agent
-from langchain_core.messages import HumanMessage
-
-# Example: Extract data from API
-response = data_agent.invoke({
-    "messages": [
-        HumanMessage(content="""
-            I want to extract the data from the API endpoint 
-            'https://pokeapi.co/api/v2/pokemon' and save it to 
-            data/extract folder in CSV format
-        """)
-    ],
-    "route_response": ""
-})
-
-print(response)
-```
-
-**SQL Query Example:**
-
-```python
-response = data_agent.invoke({
-    "messages": [
-        HumanMessage(content="""
-            Show me the top 5 users with the highest ratings
-        """)
-    ],
-    "route_response": ""
-})
-```
-
-**ETL Example:**
-
-```python
-response = data_agent.invoke({
-    "messages": [
-        HumanMessage(content="""
-            Transform the rides.csv data by filtering only rides 
-            with rating > 4.5 and save to data/transform
-        """)
-    ],
-    "route_response": ""
-})
-```
-
-### Running from Command Line
+Launch the interactive terminal interface to query your database, extract data from APIs, and perform data transformations using natural language.
 
 ```bash
-# Run the main data agent
-python main.py
+# Activate your existing virtual environment
+source .venv/bin/activate
 
-# Run individual agents
-python agents/sql_analyst.py
-python agents/etl_analyst.py
+# Start the interactive CLI
+python main.py
 ```
+
+### 🖥️ CLI Interface
+
+The CLI provides an interactive terminal experience with formatted responses, a status indicator, and support for multiple consecutive requests.
+
+![Agentic Data Platform CLI](assets/agentic-data-platform-cli.png)
+
+### 💬 Example Interactions
+
+**1. Query the database**
+
+```text
+❯ YOU Show me the average rating for each vehicle type
+
+✦ AGENT RESPONSE
+Average rating for each vehicle type:
+[Results returned from the database]
+```
+
+**2. Extract data from an API**
+
+```text
+❯ YOU Extract Pokémon data from
+https://pokeapi.co/api/v2/pokemon
+and save it as CSV in data/extract/
+```
+
+The ETL agent handles the extraction and saves the resulting dataset.
+
+**3. Transform an existing dataset**
+
+```text
+❯ YOU Filter rides.csv where rating > 4.0
+and save the result as JSON
+```
+
+The ETL agent processes the dataset and saves the transformed output.
+
+**4. Ask follow-up questions**
+
+```text
+❯ YOU How many payment methods are available?
+
+✦ AGENT RESPONSE
+There are 5 payment methods available in the database.
+
+❯ YOU List them
+
+✦ AGENT RESPONSE
+[Payment methods returned by the agent]
+```
+
+### ⌨️ CLI Commands
+
+| Command | Description |
+|---|---|
+| `clear` | Clear the terminal and redraw the interface |
+| `end` | Exit the interactive session |
+| `exit` | Exit the interactive session |
+| `quit` | Exit the interactive session |
+
+### 🧠 Agent Capabilities
+
+- **SQL Analyst Agent:** Converts natural-language questions into SQL queries, validates query safety, executes database operations, and generates answers.
+- **ETL Analyst Agent:** Extracts data from APIs, transforms datasets with Pandas, and saves results in CSV, JSON, or Parquet formats.
+- **Intelligent Router:** Directs requests to the appropriate specialized agent using LangGraph.
+- **Dynamic LLM Selection:** Selects a model based on task complexity.
+
+Each request is processed through the main agent, which routes the task to the appropriate sub-agent.
 
 ---
 
