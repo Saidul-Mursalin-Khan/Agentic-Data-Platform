@@ -1,7 +1,7 @@
 [project]
 name = "agentic-data-platform"
 version = "0.1.0"
-description = "Add your description here"
+description = "Agentic Data Platform with FastAPI"
 readme = "README.md"
 authors = [
     { name = "Saidul-Mursalin-Khan", email = "saidul.khan@tuhh.de" }
@@ -12,6 +12,14 @@ dependencies = [
     "ipython>=9.17.1",
     "pandas>=3.0.6",
     "psycopg2-binary>=2.9.13",
+    "fastapi",
+    "uvicorn[standard]",
+    "python-multipart",
+    "httpx",
+    "langchain",
+    "langchain-openai",
+    "langgraph",
+    "sqlalchemy>=2.1.5",
 ]
 
 [project.scripts]
