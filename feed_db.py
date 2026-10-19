@@ -20,7 +20,7 @@ DB_CONFIG = {
     "password": os.environ['password'],
 }
 
-CSV_DIR = "data"
+CSV_DIR = "data/demo_data"
 
 
 # ============================================================
