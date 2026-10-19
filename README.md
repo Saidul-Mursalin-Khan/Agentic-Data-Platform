@@ -565,7 +565,7 @@ Modify `utils/llm_pick.py` to adjust:
 - **Query Complexity**: Low complexity queries use faster LLMs
 - **Database Optimization**: Add indexes for frequently queried columns
 - **API Rate Limiting**: Respect rate limits of external APIs
-- **Memory Usage**: Large dataset transformations may require optimization
+- **Memory **: Large dataset transformations may require optimization
 
 ---
 
