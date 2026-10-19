@@ -113,7 +113,7 @@ The system follows a hierarchical agent architecture:
 ### 1. Clone and Setup Project
 
 ```bash
-cd Data_Agent
+cd Agentic-Data-Platform
 python -m venv .venv
 
 # Activate virtual environment
@@ -227,7 +227,7 @@ conn_details = {
     "port": 5432,
     "user": "postgres",
     "password": "password",
-    "dbname": "data_agent_db"
+    "dbname": "agentic_data_platform"
 }
 
 db = DatabaseUtil(conn_details)
