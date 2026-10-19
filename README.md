@@ -89,7 +89,7 @@ The system follows a hierarchical agent architecture:
 - **Multi-LLM Support**:
   - Low-complexity queries: Faster, cost-effective LLM
   - Medium-complexity queries: Balanced LLM
-  - High-complexity queries: Premium LLM (Claude)
+  - High-complexity queries: Premium LLM
 
 - **Safety & Validation**:
   - SQL query safety checking
@@ -156,9 +156,9 @@ password=your_password
 database=data_agent_db
 
 # Optional: LLM Model Selection
-LLM_MODEL_LOW=gpt-3.5-turbo
-LLM_MODEL_MEDIUM=gpt-4-turbo
-LLM_MODEL_HIGH=claude-3-opus
+LLM_MODEL_LOW=gpt-5.6-luna
+LLM_MODEL_MEDIUM=gpt-5.6-terra
+LLM_MODEL_HIGH=gpt-5.6-sol
 ```
 
 ---
@@ -212,7 +212,7 @@ from utils.llm_pick import pick_llm
 # Select based on complexity
 llm_fast = pick_llm("low")        # Cost-effective for simple queries
 llm_balanced = pick_llm("medium") # Balanced performance and cost
-llm_powerful = pick_llm("claude") # Premium model for complex tasks
+llm_powerful = pick_llm("high") # Premium model for complex tasks
 ```
 
 ### Database Configuration (`utils/database.py`)
