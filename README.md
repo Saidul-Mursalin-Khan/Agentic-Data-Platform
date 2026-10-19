@@ -134,7 +134,6 @@ pip install -e .
 This installs:
 - **langchain**: Core LLM framework
 - **langgraph**: Multi-agent orchestration
-- **langchain-anthropic**: Claude AI integration
 - **langchain-openai**: OpenAI integration
 - **pandas**: Data processing
 - **psycopg2**: PostgreSQL driver
@@ -147,7 +146,6 @@ Create a `.env` file in the root directory:
 
 ```env
 # LLM Configuration
-ANTHROPIC_API_KEY=your_claude_api_key
 OPENAI_API_KEY=your_openai_api_key
 
 # Database Configuration
@@ -516,7 +514,6 @@ Modify `utils/llm_pick.py` to adjust:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `ANTHROPIC_API_KEY` | Claude API key | `sk-ant-...` |
 | `OPENAI_API_KEY` | OpenAI API key | `sk-...` |
 | `host` | PostgreSQL host | `localhost` |
 | `port` | PostgreSQL port | `5432` |
