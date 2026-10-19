@@ -48,12 +48,12 @@ def etl_node(state:DataAgentSchema):
 
     return state
 
-def sql_node(state:DataAgentSchema):
+def sql_node(state: DataAgentSchema):
 
     message = state.messages[-1].content
 
     input_schema = {
-        "messages": [],
+        "messages": [HumanMessage(content=message)],
         "user_question": f"{message}",
         "curated_question": "",
         "prompt_query_context": "",
@@ -110,4 +110,10 @@ if __name__ == "__main__":
          "route_response": ""}
     )
 
-    print(response)
+    # print(response)
+    last_item = response["messages"][-1]
+
+    if isinstance(last_item, dict):
+        print(last_item.get("final_answer", "No final answer found"))
+    else:
+        print(last_item.content)
