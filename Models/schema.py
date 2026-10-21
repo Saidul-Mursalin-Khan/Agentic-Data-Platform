@@ -22,7 +22,7 @@ class ETLAgentSchema(BaseModel):
     messages : Annotated[list,add] = Field(..., description="List of messages to be processed by the ETL agent")
 
 class RouterSchema(BaseModel):
-    answer: Literal["sql","etl"] = Field(..., description="Indicates whether the user's question is related to SQL or ETL operations")
+    answer: Literal["sql","etl", "general"] = Field(..., description="Indicates whether the user's question is related to SQL or ETL operations or general")
     comments: str = Field(..., description="Additional comments or feedback regarding the classification of the user's question")
 
 class DataAgentSchema(BaseModel):

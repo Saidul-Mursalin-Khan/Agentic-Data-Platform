@@ -1,100 +1,3 @@
-# import os
-# import requests
-# import pandas as pd
-
-# class ETLTools:
-
-#     def __init__(self):
-#         pass
-
-#     def extract_load(self, url:str, output_folder:str, format:str):
-#         """
-#         This tool extracts the data from the API (url) and loads it into the
-#         the desired location (output_folder).
-
-#         Args:
-#             url (str): The API endpoint from which to extract data.
-#             output_folder (str): The folder where the extracted data will be saved.
-        
-#         Returns:
-#             str: A message indicating the success or failure of the operation.
-#         """
-
-#         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-#         output_folder = os.path.join(project_root, output_folder)
-
-#         try:
-#             response = requests.get(url)
-#             response.raise_for_status()
-#             data = response.json()
-
-#             filename = os.path.join(output_folder, f"extracted_data.{format}")
-#             os.makedirs(output_folder, exist_ok=True)
-
-#             df = pd.json_normalize(data['results'])
-#             if format == "csv":
-#                 df.to_csv(filename, index=False)
-#             elif format == "json":
-#                 df.to_json(filename, orient="records", lines=True)
-#             elif format == "parquet":
-#                 df.to_parquet(filename, index=False)
-#             else:
-#                 return f"Unsupported format: {format}"
-
-#             return f"Data successfully extracted and saved to {filename}"
-#         except requests.exceptions.RequestException as e:
-#             return f"Failed to extract data: {e}"
-
-#     def transform_load_context(self, file_path: str):
-#         """
-#         This tool transforms the data from the specified file and loads it into the
-#         desired location (output_folder).
-
-#         Args:
-#             file_path (str): The path to the file containing the data to be transformed.
-#             output_folder (str): The folder where the transformed data will be saved.
-#             output_format (str): The format in which to save the transformed data (csv, json, parquet).
-#         Returns:
-#             str: A message indicating the success or failure of the operation.
-#         """
-
-#         file_extension = os.path.splitext(file_path)[1].lower()
-#         if file_extension == ".csv":
-#             df = pd.read_csv(file_path)
-#         elif file_extension == ".json":
-#             df = pd.read_json(file_path, lines=True)
-#         elif file_extension == ".parquet":
-#             df = pd.read_parquet(file_path)
-#         else:
-#             return f"Unsupported file format: {file_extension}"
-
-#         top_3_rows = str(df.head(3))
-
-#         return top_3_rows
-
-#     def execute_code(self,code:str):
-#         """
-#         This tool executes the provided code and returns the output.
-
-#         Args:
-#             code (str): The code to be executed.
-#         Returns:
-#             str: The output of the executed code or an error message if execution fails.
-#         """
-
-#         try:
-#             exec(code)
-#             return "Code executed successfully."
-#         except Exception as e:
-#             return f"Failed to execute code: {e}"
-
-# if __name__ == "__main__":
-#     obj = ETLTools()
-#     # print(obj.extract_load("https://pokeapi.co/api/v2/pokemon/", "data/extract", "csv"))
-#     path = "/Users/saidulmursalinkhan/Developer/Agentic_Data_Platform/data/extract/extracted data.csv"
-#     print(obj.transform_load_context(path))
-
-
 import os
 import re
 import json
@@ -139,6 +42,35 @@ class ETLTools:
         return fmt
 
     @staticmethod
+    def _safe_name(name: str, default: str) -> str:
+        """'Python Posts (Oct).csv' -> 'python_posts_oct'"""
+        name = re.sub(r"\.(csv|json|parquet)$", "", str(name or "").strip(), flags=re.IGNORECASE)
+        name = re.sub(r"[^a-z0-9]+", "_", name.lower()).strip("_")[:40].strip("_")
+        return name or default
+
+    @staticmethod
+    def _unique_path(folder: str, name: str, fmt: str) -> str:
+        """Never overwrite: if the name is taken, add _2, _3, ..."""
+        path = os.path.join(folder, f"{name}.{fmt}")
+        counter = 2
+        while os.path.exists(path):
+            path = os.path.join(folder, f"{name}_{counter}.{fmt}")
+            counter += 1
+        return path
+
+    @staticmethod
+    def _latest_file(folder: str) -> str:
+        """When a folder is given instead of a file, use the newest csv/json/parquet inside it."""
+        extensions = tuple(f".{fmt}" for fmt in ETLTools.SUPPORTED_FORMATS)
+        files = [
+            os.path.join(folder, name) for name in os.listdir(folder)
+            if name.lower().endswith(extensions)
+        ]
+        if not files:
+            raise FileNotFoundError(f"No csv/json/parquet files found in: {folder}")
+        return max(files, key=os.path.getmtime)
+
+    @staticmethod
     def clean_code(response: str) -> str:
         """Pull the code out of an LLM answer, with or without ``` fences."""
         match = re.search(r"```(?:python|py)?\s*\n(.*?)```", response, re.DOTALL)
@@ -169,6 +101,10 @@ class ETLTools:
 
     def read_file(self, file_path: str) -> pd.DataFrame:
         file_path = self._resolve(file_path)
+
+        if os.path.isdir(file_path):
+            file_path = self._latest_file(file_path)
+
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"File not found: {file_path}")
 
@@ -177,9 +113,9 @@ class ETLTools:
             return pd.read_csv(file_path)
         elif file_extension == ".json":
             try:
-                return pd.read_json(file_path, lines=True)   # files written by save_dataframe
+                return pd.read_json(file_path, convert_dates=False)               # normal JSON array (new files)
             except ValueError:
-                return pd.read_json(file_path)               # normal JSON array
+                return pd.read_json(file_path, lines=True, convert_dates=False)   # older JSON-lines files
         elif file_extension == ".parquet":
             return pd.read_parquet(file_path)
         raise ValueError(f"Unsupported file format: {file_extension}")
@@ -188,14 +124,19 @@ class ETLTools:
         fmt = self._clean_format(format)
         output_folder = self._resolve(output_folder)
         os.makedirs(output_folder, exist_ok=True)
-        filename = os.path.join(output_folder, f"{file_name}.{fmt}")
+
+        file_name = self._safe_name(file_name, "data")
+        filename = self._unique_path(output_folder, file_name, fmt)   # never overwrites
 
         df = self._flatten_cells(df.copy())
 
         if fmt == "csv":
             df.to_csv(filename, index=False, encoding="utf-8")
         elif fmt == "json":
-            df.to_json(filename, orient="records", lines=True, force_ascii=False)
+            # One valid JSON array with indent (no JSON-lines, no "\/" escaping, NaN -> null)
+            records = json.loads(df.to_json(orient="records", date_format="iso"))
+            with open(filename, "w", encoding="utf-8") as f:
+                json.dump(records, f, ensure_ascii=False, indent=2)
         elif fmt == "parquet":
             try:
                 df.to_parquet(filename, index=False)
@@ -205,7 +146,7 @@ class ETLTools:
 
     # ------------------------------------------------------------------ extract + load
 
-    def extract_load(self, url:str, output_folder:str, format:str, query_params:str = ""):
+    def extract_load(self, url:str, output_folder:str, format:str, query_params:str = "", file_name:str = ""):
         """
         This tool extracts the data from the API (url) and loads it into the
         the desired location (output_folder).
@@ -254,7 +195,7 @@ class ETLTools:
                 return "Failed to extract data: the API returned no records."
 
             df = pd.json_normalize(records)   # flattens nested dicts such as user.name
-            filename = self.save_dataframe(df, output_folder, "extracted_data", fmt)
+            filename = self.save_dataframe(df, output_folder, file_name or "extracted_data", fmt)
 
             return f"Data successfully extracted and saved to {filename} ({len(df)} rows). Columns: {list(df.columns)}"
         except requests.exceptions.RequestException as e:

@@ -1,53 +1,53 @@
 id,category,prompt,status,seconds,answer
-SQL01,SQL - Distinct values,What are the different types of payment methods in our database?,OK,8.6,"The available payment methods are:
+SQL01,SQL - Distinct values,What are the different types of payment methods in our database?,OK,7.6,"The available payment methods are:
 
 - Apple Pay
 - Credit card
 - Debit card
 - Google Pay
 - PayPal"
-SQL02,SQL - Count,How many users do we have?,OK,16.0,"We have 10,000 users."
-SQL03,SQL - Conditional count,How many active users are there?,OK,5.7,"There are **9,028 active users**."
-SQL04,SQL - Group by,How many drivers and riders do we have?,OK,6.8,"We have **3,000 drivers** and **7,000 riders**."
-SQL05,SQL - Sorting and limit,Show me exactly 25 rides.,OK,9.9,"Here are exactly 25 rides:
+SQL02,SQL - Count,How many users do we have?,OK,5.6,"We have 10,000 users."
+SQL03,SQL - Conditional count,How many active users are there?,OK,5.4,"There are **9,028 active users**."
+SQL04,SQL - Group by,How many drivers and riders do we have?,OK,6.4,"We have **3,000 drivers** and **7,000 riders**."
+SQL05,SQL - Sorting and limit,Show me exactly 25 rides.,OK,10.3,"Here are exactly 25 rides:
 
-| Ride ID | Status | Requested At | Fare |
-|---:|---|---|---:|
-| 1 | Cancelled | Feb 27, 2026 | $0.00 |
-| 2 | Completed | Dec 26, 2025 | $52.17 |
-| 3 | Completed | Jul 3, 2025 | $70.53 |
-| 4 | Completed | Mar 1, 2025 | $42.98 |
-| 5 | Completed | Jul 9, 2026 | $59.61 |
-| 6 | Completed | Oct 3, 2025 | $131.82 |
-| 7 | Completed | Oct 13, 2025 | $62.97 |
-| 8 | Completed | Mar 8, 2025 | $39.38 |
-| 9 | Completed | Sep 8, 2025 | $83.33 |
-| 10 | Completed | Nov 17, 2025 | $79.25 |
-| 11 | Completed | Apr 21, 2026 | $53.42 |
-| 12 | Completed | Apr 11, 2026 | $67.72 |
-| 13 | Completed | Jul 15, 2026 | $14.39 |
-| 14 | Completed | Jan 29, 2025 | $20.61 |
-| 15 | Completed | Nov 13, 2025 | $73.68 |
-| 16 | Completed | Aug 25, 2025 | $74.87 |
-| 17 | Completed | May 21, 2026 | $38.37 |
-| 18 | Completed | Apr 8, 2025 | $139.67 |
-| 19 | Requested | Apr 10, 2025 | $0.00 |
-| 20 | Completed | Jul 8, 2026 | $32.28 |
-| 21 | Completed | Nov 28, 2025 | $98.78 |
-| 22 | Completed | Jul 4, 2026 | $54.20 |
-| 23 | Cancelled | Jun 21, 2026 | $0.00 |
-| 24 | Completed | Jul 22, 2026 | $35.92 |
-| 25 | Completed | Jul 21, 2026 | $34.64 |"
-SQL06,SQL - Aggregation,What is the average fare of completed rides?,OK,6.5,The average fare for completed rides is **64.57**.
-SQL07,SQL - Date filtering,How many rides were requested in 2025?,OK,6.4,"12,765 rides were requested in 2025."
-SQL08,SQL - Join and aggregation,"Which payment methods are used the most, and what is the total amount paid with each?",OK,8.8,"Payment methods ranked by frequency of use:
+| Ride ID | Status | Requested At | Fare | Distance | Surge |
+|---:|---|---|---:|---:|---:|
+| 1 | Cancelled | Feb 27, 2026 | $0.00 | 0.00 mi | 1.00× |
+| 2 | Completed | Dec 26, 2025 | $52.17 | 13.16 mi | 1.50× |
+| 3 | Completed | Jul 3, 2025 | $70.53 | 26.59 mi | 1.00× |
+| 4 | Completed | Mar 1, 2025 | $42.98 | 11.35 mi | 1.20× |
+| 5 | Completed | Jul 9, 2026 | $59.61 | 23.35 mi | 1.00× |
+| 6 | Completed | Oct 3, 2025 | $131.82 | 25.15 mi | 2.00× |
+| 7 | Completed | Oct 13, 2025 | $62.97 | 23.87 mi | 1.00× |
+| 8 | Completed | Mar 8, 2025 | $39.38 | 18.19 mi | 1.00× |
+| 9 | Completed | Sep 8, 2025 | $83.33 | 36.90 mi | 1.00× |
+| 10 | Completed | Nov 17, 2025 | $79.25 | 34.57 mi | 1.00× |
+| 11 | Completed | Apr 21, 2026 | $53.42 | 22.81 mi | 1.00× |
+| 12 | Completed | Apr 11, 2026 | $67.72 | 25.98 mi | 1.00× |
+| 13 | Completed | Jul 15, 2026 | $14.39 | 1.51 mi | 1.00× |
+| 14 | Completed | Jan 29, 2025 | $20.61 | 4.66 mi | 1.00× |
+| 15 | Completed | Nov 13, 2025 | $73.68 | 30.39 mi | 1.00× |
+| 16 | Completed | Aug 25, 2025 | $74.87 | 34.87 mi | 1.00× |
+| 17 | Completed | May 21, 2026 | $38.37 | 16.01 mi | 1.00× |
+| 18 | Completed | Apr 8, 2025 | $139.67 | 36.39 mi | 2.00× |
+| 19 | Requested | Apr 10, 2025 | $0.00 | 0.00 mi | 1.00× |
+| 20 | Completed | Jul 8, 2026 | $32.28 | 6.93 mi | 1.00× |
+| 21 | Completed | Nov 28, 2025 | $98.78 | 18.11 mi | 2.00× |
+| 22 | Completed | Jul 4, 2026 | $54.20 | 27.66 mi | 1.00× |
+| 23 | Cancelled | Jun 21, 2026 | $0.00 | 0.00 mi | 1.00× |
+| 24 | Completed | Jul 22, 2026 | $35.92 | 15.21 mi | 1.00× |
+| 25 | Completed | Jul 21, 2026 | $34.64 | 9.68 mi | 1.00× |"
+SQL06,SQL - Aggregation,What is the average fare of completed rides?,OK,7.8,The average fare for completed rides is **64.57**.
+SQL07,SQL - Date filtering,How many rides were requested in 2025?,OK,6.2,"12,765 rides were requested in 2025."
+SQL08,SQL - Join and aggregation,"Which payment methods are used the most, and what is the total amount paid with each?",OK,7.4,"Payment methods ranked by frequency of use:
 
-1. **Apple Pay:** 3,046 transactions — **$195,509.95**
-2. **Google Pay:** 3,039 transactions — **$198,738.88**
-3. **PayPal:** 2,944 transactions — **$187,905.39**
-4. **Debit card:** 2,893 transactions — **$188,830.93**
-5. **Credit card:** 2,844 transactions — **$185,558.91**"
-SQL09,SQL - Text filtering,Show users whose first name starts with J.,OK,7.3,"Users whose first name begins with “J”:
+1. **Apple Pay** — 3,046 uses; total paid: **$195,509.95**
+2. **Google Pay** — 3,039 uses; total paid: **$198,738.88**
+3. **PayPal** — 2,944 uses; total paid: **$187,905.39**
+4. **Debit card** — 2,893 uses; total paid: **$188,830.93**
+5. **Credit card** — 2,844 uses; total paid: **$185,558.91**"
+SQL09,SQL - Text filtering,Show users whose first name starts with J.,OK,6.9,"Users whose first names start with “J”:
 
 - Joshua Walker
 - Jill Rhodes
@@ -59,45 +59,49 @@ SQL09,SQL - Text filtering,Show users whose first name starts with J.,OK,7.3,"Us
 - Jeremy Johnson
 - Jason Hahn
 - Joseph Wright"
-SQL10,SQL - Data quality,Are there completed rides with a fare of zero?,OK,7.1,"No, there are no completed rides with a fare of zero."
-ETL01,ETL - Extract API to CSV,Extract 'https://dev.to/api/articles' with per_page=30 and save as CSV in data/extract.,OK,6.1,"Extracted 30 articles from the DEV.to API and saved them as CSV:
+SQL10,SQL - Data quality,Are there completed rides with a fare of zero?,OK,5.9,"No, there are no completed rides with a fare of zero."
+ETL01,ETL - Extract API to CSV,Extract 'https://dev.to/api/articles' with per_page=30 and save as CSV in data/extract.,OK,3.7,Extracted 30 DEV Community articles and saved them as CSV in `data/extract/devto_articles.csv`.
+ETL02,ETL - Filter rows,Transform 'data/extract' and save to 'data/transform' as CSV. Keep only posts whose tags contain python.,OK,4.3,"Filtered posts with tags containing “python” and saved 2 rows as CSV:
 
-`data/extract/extracted_data.csv`"
-ETL02,ETL - Filter rows,Transform 'data/extract/extracted_data.csv' and save to 'data/transform' as CSV. Keep only posts whose tags contain python.,OK,5.6,"Transformed the data and saved the filtered CSV to:
+`data/transform/python_posts.csv`"
+ETL03,ETL - Sort and top N,Transform 'data/extract' and save to 'data/transform' as CSV. Sort by public_reactions_count descending and keep the top 5.,OK,5.1,"Transformed the latest data in `data/extract`, sorted by `public_reactions_count` descending, and retained the top 5 rows.
 
-`data/transform/transformed_data.csv`
+Saved CSV: `data/transform/top_reactions.csv`"
+ETL04,ETL - Group and count,Transform 'data/extract' and save to 'data/transform' as CSV. Count articles per author (user.name).,OK,5.4,"Transformed the extracted data and saved article counts by `user.name` as CSV:
 
-Kept 2 posts whose tags contain `python`."
-ETL03,ETL - Sort and top N,Transform 'data/extract/extracted_data.csv' and save to 'data/transform' as CSV. Sort by public_reactions_count descending and keep the top 5.,OK,7.4,"Transformed the data, sorted by `public_reactions_count` descending, and retained the top 5 rows.
+`data/transform/articles_per_author.csv`
 
-Saved CSV: `data/transform/transformed_data.csv`"
-ETL04,ETL - Group and count,Transform 'data/extract/extracted_data.csv' and save to 'data/transform' as CSV. Count articles per author (user.name).,OK,5.7,"Transformation completed. Article counts per `user.name` were saved as CSV to:
+The output contains 20 authors with their corresponding article counts."
+ETL05,ETL - Add calculated column,Transform 'data/extract' and save to 'data/transform' as CSV. Add title_length with the number of characters in each title.,OK,5.3,"Transformed 30 rows and added the `title_length` column. The CSV was saved to:
 
-`data/transform/transformed_data.csv`
+`data/transform/title_lengths.csv`"
+ETL06,ETL - Select and rename columns,"Transform 'data/extract' and save to 'data/transform' as CSV. Keep only id, title and url, and rename title to headline.",OK,5.0,"Transformed the data and saved the CSV to:
 
-The output contains 21 author rows."
-ETL05,ETL - Add calculated column,Transform 'data/extract/extracted_data.csv' and save to 'data/transform' as CSV. Add title_length with the number of characters in each title.,OK,5.6,"Transformation completed. Added `title_length` and saved the CSV to:
+`data/transform/article_headlines.csv`
 
-`data/transform/transformed_data.csv`
+It contains 30 rows with columns: `id`, `headline`, and `url`."
+ETL07,ETL - Remove duplicates,Transform 'data/extract' and save to 'data/transform' as CSV. Remove duplicate rows based on title.,OK,4.6,"Transformed the data, removing duplicate rows by `title` (keeping the first occurrence).
 
-Processed 30 rows."
-ETL06,ETL - Select and rename columns,"Transform 'data/extract/extracted_data.csv' and save to 'data/transform' as CSV. Keep only id, title and url, and rename title to headline.",OK,6.0,"Transformed the data and saved it as CSV at:
+Saved CSV: `data/transform/unique_titles.csv`  
+Rows remaining: 30"
+ETL08,ETL - Date filtering,Transform 'data/extract' and save to 'data/transform' as CSV. Keep articles published in the last 7 days.,OK,4.9,"Transformed the extracted data and saved 24 articles published within the last 7 days as CSV:
 
-`data/transform/transformed_data.csv`
+`data/transform/recent_articles.csv`"
+ETL09,ETL - Format conversion,Transform 'data/extract' and save to 'data/transform' as JSON. Keep only the first 10 rows.,OK,4.4,"Transformed the latest data in `data/extract`, retaining the first 10 rows, and saved it as JSON:
 
-The output contains `id`, `headline` (renamed from `title`), and `url` for 30 rows."
-ETL07,ETL - Remove duplicates,Transform 'data/extract/extracted_data.csv' and save to 'data/transform' as CSV. Remove duplicate rows based on title.,OK,5.4,"Transformed the CSV and removed duplicate rows based on `title`, retaining the first occurrence.
+`data/transform/first_ten_rows.json`"
+ETL10,ETL - Chained workflow,"Extract 'https://dev.to/api/articles' as CSV into data/extract, then keep only posts with the python tag and save the result to data/transform as CSV.",OK,6.3,"Extraction and transformation completed.
 
-Output: `data/transform/transformed_data.csv`  
-Rows after transformation: 30"
-ETL08,ETL - Date filtering,Transform 'data/extract/extracted_data.csv' and save to 'data/transform' as CSV. Keep articles published in the last 7 days.,OK,5.9,"Transformation completed. The filtered CSV contains 25 articles published within the last 7 days and was saved to:
+- Extracted articles CSV: `data/extract/devto_articles_2.csv` (30 rows)
+- Python-tagged posts CSV: `data/transform/python_posts_2.csv` (2 rows)"
+GEN01,General - Greeting,hello,OK,2.0,Hello! How can I help today? I can also help analyze ride-sharing database questions or extract and transform data from APIs/files.
+GEN02,General - Concept question,What is a data lake?,OK,3.5,"A data lake is a centralized storage system that holds large amounts of raw data in its original format.
 
-`data/transform/transformed_data.csv`"
-ETL09,ETL - Format conversion,Transform 'data/extract/extracted_data.csv' and save to 'data/transform' as JSON. Keep only the first 10 rows.,OK,5.1,"Transformed the CSV to JSON, retaining the first 10 rows.
+It can store structured data (tables), semi-structured data (JSON, logs), and unstructured data (documents, images, audio). Unlike a traditional data warehouse, data is usually cleaned and transformed later—when it is needed for analysis, reporting, or machine learning.
 
-Saved file: `data/transform/transformed_data.json`"
-ETL10,ETL - Chained workflow,"Extract 'https://dev.to/api/articles' as CSV into data/extract, then keep only posts with the python tag and save the result to data/transform as CSV.",OK,9.0,"Extraction and transformation completed.
+In short:
 
-- Extracted articles CSV: `data/extract/extracted_data.csv`
-- Filtered Python-tagged posts CSV: `data/transform/transformed_data.csv`
-- Result contains 2 posts with the `python` tag."
+- **Data lake:** flexible, raw, large-scale storage
+- **Data warehouse:** curated, structured data optimized for reporting and analytics
+
+For example, a ride-sharing company might put trip records, app logs, GPS events, customer support messages, and pricing data into a data lake before transforming selected data for dashboards or models."
